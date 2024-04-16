@@ -1,72 +1,129 @@
 {
-    "Title": "Campus Life on the West Side",
-    "Credits": "Created by Adam Smith (amsmith@ucsc.edu).",
-    "InitialLocation": "Kresge",
+    "Title": "Mysterious dungeon",
+    "Credits": "Engine Created by Adam Smith (amsmith@ucsc.edu). Story created by Ezra Frary (efrary@ucsc.edu)",
+    "InitialLocation": "startText",
     "Locations": {
-        "Kresge": {
-            "Body": "This is Kresge College, lots of nice trees.",
+        "startText": {
+            "Body": "You come to in a strage room. You feel rather disoriented and have no idea where you are.",
             "Choices": [
                 {
-                    "Text": "South",
-                    "Target": "Porter"
+                    "Text": "Look around",
+                    "Target": "brickRoom"
                 }
             ]
         },
-        "Porter": {
-            "Body": "This is Porter College, the trees are nice here too.",
+        "brickRoom": {
+            "Body": "You are in a rather large room. All four walls, the floor and the celing are made of red brick. Strangely there is what appears to be a large compass paintedo on the celing. You notice on the northern wall there is a lever and a button.",
             "Choices": [
                 {
-                    "Text": "North",
-                    "Target": "Kresge"
+                    "Text": "Pull lever",
+                    "Target": "!lever1"
                 },
                 {
-                    "Text": "South",
-                    "Target": "Rachel Carson"
+                    "Text": "Push button",
+                    "Target": "^buttonPushed",
+                    "Target1": "trueLeverButton",
+                    "Target2": "falseLeverButton"
+                    
                 }
             ]
         },
-        "Rachel Carson": {
-            "Body": "Rachel Carson College, more sun and fewer trees.",
+        "brickRoomVisit2": {
+            "Body": "You are back in the brick room, the door closes behind you. There is still a button and a lever on the north wall",
             "Choices": [
                 {
-                    "Text": "North",
-                    "Target": "Porter"
+                    "Text": "Pull lever",
+                    "Target": "!lever1"
                 },
                 {
-                    "Text": "South",
-                    "Target": "Oakes"
+                    "Text": "Push button",
+                    "Target": "^buttonPushed",
+                    "Target1": "trueLeverButton",
+                    "Target2": "falseLeverButton"
+                    
                 }
             ]
         },
-        "Oakes": {
-            "Body": "Oakes College, even the buildings have tree bark on them.",
+        "!lever1":{
+            "Body": "Nothing seems to happen when you pull the lever",
             "Choices": [
                 {
-                    "Text": "North",
-                    "Target": "Rachel Carson"
+                    "Text":"Pull lever",
+                    "Target": "!lever1"
                 },
                 {
-                    "Text": "Enter Dining Hall",
-                    "Target": "Oakes Dining Hall"
-                },
-                {
-                    "Text": "South",
-                    "Target": "Beyond"
+                    "Text": "Push button",
+                    "Target": "^buttonPushed",
+                    "Target1": "trueLeverButton",
+                    "Target2": "falseLeverButton"
+                    
                 }
             ]
         },
-        "Oakes Dining Hall": {
-            "Body": "Oakes college dining hall. Smells a little funny, but the food is pretty good sometimes.",
+        "^buttonPushed":{
+            "Body": "default error 1"
+        },
+        "trueLeverButton":{
+            "Body": "A door opens on the western wall out of nowhere. The door appears to be locked",
             "Choices": [
                 {
-                    "Text": "Head back outside",
-                    "Target": "Oakes"
+                    "Text": "go back",
+                    "Target": "brickRoomVisit2"
+                },
+                {
+                    "Text": "unlock door",
+                    "Target": "$Beyond"
                 }
             ]
-
         },
-        "Beyond": {
-            "Body": "Grass, don't forget to check for ticks!"
+        "falseLeverButton":{
+            "Body": "A hallway opens on the eastern wall out of nowhere. You cannot see the end of it",
+            "Choices": [
+                {
+                    "Text": "Enter the hallway",
+                    "Target": "grassRoom"
+                }
+            ]
+        },
+        "grassRoom":{
+            "Body": "At the end of the hallway you find a mysterious room with similarly brick walls and cleing, but a floor made up of waist high grass",
+            "Choices": [
+                {
+                    "Text": "go back",
+                    "Target": "brickRoomVisit2"
+                },
+                {
+                    "Text": "Look around",
+                    "Target": "SearchGrassRoom1"
+                }
+            ]
+        },
+        "SearchGrassRoom1":{
+            "Body": "The grass is hard to search through, you feel like you've done an okay job, but it might take more time",
+            "Choices": [
+                {
+                    "Text":"go back",
+                    "Target": "brickRoomVisit2"
+                },
+                {
+                    "Text": "keep searching",
+                    "Target": "@SearchGrassRoom2",
+                    "Target2": "SearchGrassRoom1"
+                    
+                }
+            ]
+        },
+        "@SearchGrassRoom2":{
+            "Body": "You keep looking and find something in the grass. It appears to be a key. I wonder what it could be used for",
+            "Choices": [
+                {
+                    "Text":"go back",
+                    "Target": "brickRoomVisit2"
+                }
+            ]
+        },
+        "$Beyond": {
+            "Body": "You open the door to find yourself on a busy street in your hometown. You turn around to see that there is no door behind you. Just a brick wall."
         }
     }
 }

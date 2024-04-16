@@ -23,6 +23,8 @@ class Engine {
         );
     }
 
+    
+
     gotoScene(sceneClass, data) {
         this.scene = new sceneClass(this);
         this.scene.create(data);

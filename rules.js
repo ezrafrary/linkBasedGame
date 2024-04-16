@@ -2,6 +2,8 @@ class Start extends Scene {
     create() {
         this.engine.setTitle(this.engine.storyData.Title); // TODO: replace this text using this.engine.storyData to find the story title
         this.engine.addChoice("Begin the story");
+        this.engine.leverPulled = false;
+        this.engine.keyObtained = false;
     }
 
     handleChoice() {
@@ -14,9 +16,18 @@ class Location extends Scene {
         let locationData = this.engine.storyData.Locations[key]; // TODO: use `key` to get the data object for the current story location
         this.engine.show(locationData.Body); // TODO: replace this text by the Body of the location data
         
-        if(true) { // TODO: check if the location has any Choices
+        if(locationData.Choices.length > 0  ) { // TODO: check if the location has any Choices
             for(let choice of locationData.Choices) { // TODO: loop over the location's Choices
-                this.engine.addChoice(choice.Text, choice); // TODO: use the Text of the choice 
+
+                //this.engine.show(choice.Target);//for debugging
+
+                if(choice.Target.charAt(0) == "$"){
+                    if(this.engine.keyObtained == true){
+                        this.engine.addChoice(choice.Text, choice);
+                    }
+                }else{
+                    this.engine.addChoice(choice.Text, choice);
+                } // TODO: use the Text of the choice 
                 // TODO: add a useful second argument to addChoice so that the current code of handleChoice below works
             }
         } else {
@@ -26,13 +37,48 @@ class Location extends Scene {
 
     handleChoice(choice) {
         if(choice) {
-            this.engine.show("&gt; "+choice.Text);
-            this.engine.gotoScene(Location, choice.Target);
+            //pulling lever
+            if(choice.Target.charAt(0) == "!"){
+                if(this.engine.leverPulled == true){
+                    this.engine.leverPulled = false;
+                }else{
+                    this.engine.leverPulled = true;
+                }
+            }
+
+           
+
+            if(choice.Target.charAt(0) == "^"){
+                if(this.engine.leverPulled == true){
+                    this.engine.show("&gt; "+choice.Text);
+                    this.engine.gotoScene(Location, choice.Target1);
+                }else{
+                    this.engine.show("&gt; "+choice.Text);
+                    this.engine.gotoScene(Location, choice.Target2);
+                }
+            }else if(choice.Target.charAt(0) == "@"){
+                if(this.engine.keyObtained == true){
+                    this.engine.show("&gt; "+choice.Text);
+                    this.engine.gotoScene(Location, choice.Target2);
+                }else{                    
+                    this.engine.keyObtained = true;
+                    this.engine.show(this.engine.keyObtained);
+                    this.engine.show("&gt; "+choice.Text);
+                    this.engine.gotoScene(Location, choice.Target);
+                }
+            }else{
+                this.engine.show("&gt; "+choice.Text);
+                this.engine.gotoScene(Location, choice.Target);
+            }
+
+            
         } else {
             this.engine.gotoScene(End);
         }
     }
 }
+
+
 
 class End extends Scene {
     create() {
